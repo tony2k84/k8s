@@ -1,0 +1,51 @@
+services:
+    vote:
+        container_name: voting-app
+        build: ./apps/voting-app
+        command: node server.js
+        depends_on:
+            - redis
+        links:
+            - redis
+        ports: 
+            - "9001:9001"
+        environment:
+            -   NODE_ENV=production
+            -   PORT=9001
+            -   REDIS_URL=redis://cache
+    result:
+        container_name: result-app
+        build: ./apps/result-app
+        command: node server.js
+        depends_on:
+            - db
+        links:
+            - db
+        ports:
+            - "9002:9002"
+        environment:
+            -   NODE_ENV=production
+            -   PORT=9002
+            -   MONGODB_URL=mongodb://database
+    worker:
+        container_name: worker-app
+        build: ./apps/worker-app
+        command: node server.js
+        depends_on:
+            - db
+            - redis
+        links:
+            - db
+            - redis
+        environment:
+            -   NODE_ENV=production
+            -   MONGODB_URL=mongodb://database
+            -   REDIS_URL=redis://cache
+    redis:
+        container_name: cache
+        image: redis:latest
+        ports: ["6379"]
+    db:
+        container_name: database
+        image: mongo:latest
+        ports: ["27017"]

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vote Results</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      html,
+      body {
+        font-family: "Montserrat", sans-serif;
+      }
+      body {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+      .vote {
+        display: flex;
+        flex-direction: row;
+        color: white;
+        text-align: center;
+      }
+      .cats {
+        padding: 4em;
+        background-color: rgb(73, 96, 227);
+      }
+      .dogs {
+        padding: 4em;
+        background-color: rgb(227, 73, 194);
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Vote Now</h1>
+    <div class="vote">
+      <div class="cats">
+        <h2>CATS</h2>
+        <h3 id="catsPer">100%</h3>
+      </div>
+      <div class="dogs">
+        <h2>DOGS</h2>
+        <h3 id="dogsPer">100%</h3>
+      </div>
+    </div>
+    <script type="text/javascript">
+      document.body.onload = getVotes();
+      function getVotes() {
+        console.log("get latest votes");
+        fetch(`/result`)
+          .then((response) => response.json())
+          .then((data) => {
+              const cats = data.result.filter(e => e.type === 'CATS')[0].votes
+              const dogs = data.result.filter(e => e.type === 'DOGS')[0].votes
+              const catsPer = ((cats/(cats + dogs))*100).toFixed(2)
+              const dogsPer = ((dogs/(cats + dogs))*100).toFixed(2)
+              document.getElementById("catsPer").innerText = `${catsPer} %`
+              document.getElementById("dogsPer").innerText = `${dogsPer} %`
+          });
+      }
+    </script>
+  </body>
+</html>

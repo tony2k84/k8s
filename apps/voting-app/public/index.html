@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vote Now</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      html,
+      body {
+        font-family: "Montserrat", sans-serif;
+      }
+      body {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+      .vote {
+        display: flex;
+        flex-direction: row;
+        color: white;
+        cursor: pointer;
+      }
+      .cats {
+        padding: 4em;
+        background-color: rgb(73, 96, 227);
+      }
+      .dogs {
+        padding: 4em;
+        background-color: rgb(227, 73, 194);
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Vote Now</h1>
+    <div class="vote">
+      <div class="cats" onclick="vote('CATS')">
+        <h2>CATS</h2>
+      </div>
+      <div class="dogs" onclick="vote('DOGS')">
+        <h2>DOGS</h2>
+      </div>
+    </div>
+    <script type="text/javascript">
+      function vote(type) {
+        console.log("submit vote", type);
+        fetch(`/vote/${type}`)
+          .then((response) => response.json())
+          .then((data) => console.log('VOTE SUBMITTED'));
+      }
+    </script>
+  </body>
+</html>

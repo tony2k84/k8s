@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: worker-pod
+  labels:
+    name: worker-pod
+    app: demo-voting-app
+    tier: front-end
+spec:
+  containers:
+    - name: worker-app
+      image: worker-app:latest
+      imagePullPolicy: Never
+      env:
+        - name: REDIS_URL
+          value: redis://redis:6379
+        - name: MONGO_URL
+          value: mongodb://mongo:27017/voting
